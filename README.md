@@ -12,3 +12,9 @@ Breadboard
 LCD (16x2) οθόνη
 
 Αισθητήρας αφής (Thin Film Force Pop Sensor Pressure Sensor)
+
+καλώδια
+
+LED
+
+Γάντι (όπου θα προσαρμοστούν οι αισθητήρες)
