@@ -6,6 +6,9 @@ Pressure sensor glove. Student project created at Gymnasio Vamou.
 Υλικά που θα χρειαστούν:
 
 Arduino UNO
+
 Breadboard
+
 LCD (16x2) οθόνη
+
 Αισθητήρας αφής (Thin Film Force Pop Sensor Pressure Sensor)
