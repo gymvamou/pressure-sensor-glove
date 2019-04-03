@@ -1,0 +1,152 @@
+//Pressure sensor glove - Gymnasio Vamou 2019
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27,16 ,2); // set the LCD address to 0x27, set 16 chars and 2 line display
+
+int fsr1Pin = 14;     // the FSR and 10K pulldown are connected to a0
+int fsr1Reading;      // the analog reading from the FSR resistor divider
+int fsr2Pin = 15;     // the FSR and 10K pulldown are connected to a1   
+int fsr2Reading;   
+int fsr3Pin = 16;     // the FSR and 10K pulldown are connected to a2
+int fsr3Reading;
+int fsr4Pin = 17;     // the FSR and 10K pulldown are connected to a3
+int fsr4Reading;      
+int greenLEDpin1 = 5;    
+int redLEDpin1 = 6;    
+int greenLEDpin2 = 7; 
+int redLEDpin2 = 8;       
+int greenLEDpin3 = 9;
+int redLEDpin3 = 10;
+int greenLEDpin4 = 11;
+int redLEDpin4 = 12;
+
+void setup() {
+    Serial.begin(9600);   
+    pinMode(greenLEDpin1, OUTPUT);
+    pinMode(redLEDpin1, OUTPUT);
+    pinMode(greenLEDpin2, OUTPUT);
+    pinMode(redLEDpin2, OUTPUT);
+    pinMode(greenLEDpin3, OUTPUT);
+    pinMode(redLEDpin3, OUTPUT);
+    pinMode(greenLEDpin4, OUTPUT);
+    pinMode(redLEDpin4, OUTPUT);
+    pinMode(14, INPUT);
+    pinMode(15, INPUT);
+    pinMode(16, INPUT);
+    pinMode(17, INPUT);
+    lcd.init();
+    lcd.backlight();
+    lcd.setCursor(0,0);
+    lcd.print("Gymmnasio Vamou");
+}
+
+void loop() {
+  fsr1Reading = analogRead(fsr1Pin);  
+  fsr2Reading = analogRead(fsr2Pin);
+  fsr3Reading = analogRead(fsr3Pin);  
+  fsr4Reading = analogRead(fsr4Pin);
+  Serial.print(" Analog reading1 = ");
+  Serial.print(fsr1Reading);     // the raw analog reading
+  Serial.print(" Analog reading2 = "); 
+  Serial.print(fsr2Reading);
+  Serial.print(" Analog reading3 = ");
+  Serial.print(fsr3Reading);     // the raw analog reading
+  Serial.print(" Analog reading4 = "); 
+  Serial.print(fsr4Reading);
+  delay(200);
+  
+  if (fsr1Reading < 50) {
+    Serial.println(" - No pressure");
+    digitalWrite(11, LOW);
+    digitalWrite(12, LOW);
+    
+  } else if (fsr1Reading < 300) {
+    Serial.println(" - Light squeeze");
+    digitalWrite(11, HIGH);
+    digitalWrite(12, LOW);        
+  } else if (fsr1Reading < 500) {
+    Serial.println(" - Medium squeeze");
+    digitalWrite(11, HIGH);
+    digitalWrite(12, HIGH);   
+  } else if (fsr1Reading > 500){
+    Serial.println(" - Big squeeze");
+    digitalWrite(11, LOW);
+    digitalWrite(12, HIGH); 
+  }
+  
+  if (fsr2Reading < 50) {
+    Serial.println(" - No pressure");
+    digitalWrite(9, LOW);
+    digitalWrite(10, LOW);
+ 
+  } else if (fsr2Reading < 300) {
+    Serial.println(" - Light squeeze");
+    digitalWrite(9, HIGH);
+    digitalWrite(10, LOW);
+      
+  } else if (fsr2Reading < 500) {
+    Serial.println(" - Medium squeeze");
+    digitalWrite(9, HIGH);
+    digitalWrite(10, HIGH);
+    
+  } else if (fsr2Reading > 500){
+    Serial.println(" - Big squeeze");
+    digitalWrite(9, LOW);
+    digitalWrite(10, HIGH);
+  }
+  
+ if (fsr3Reading < 50) {
+    Serial.println(" - No pressure");
+    digitalWrite(7, LOW);
+    digitalWrite(8, LOW);
+
+  } else if (fsr3Reading < 300) {
+    Serial.println(" - Light squeeze");
+    digitalWrite(7, HIGH);
+    digitalWrite(8, LOW);
+  
+  } else if (fsr3Reading < 500) {
+    Serial.println(" - Medium squeeze");
+    digitalWrite(7, HIGH);
+    digitalWrite(8, HIGH);
+
+  } else if (fsr3Reading > 500){
+    Serial.println(" - Big squeeze");
+    digitalWrite(7, LOW);
+    digitalWrite(8, HIGH);
+  }
+  
+  if (fsr4Reading < 50) {
+    Serial.println(" - No pressure");
+    digitalWrite(5, LOW);
+    digitalWrite(6, LOW);
+
+  } else if (fsr4Reading < 300) {
+    Serial.println(" - Light squeeze");
+    digitalWrite(5, HIGH);
+    digitalWrite(6, LOW);
+ 
+  } else if (fsr4Reading < 500) {
+    Serial.println(" - Medium squeeze");
+    digitalWrite(5, HIGH);
+    digitalWrite(6, HIGH);
+ 
+  } else if (fsr4Reading > 500){
+    Serial.println(" - Big squeeze");
+    digitalWrite(5, LOW);
+    digitalWrite(6, HIGH);
+  
+  }
+  delay(200);
+  if ((fsr1Reading < 50) && (fsr2Reading < 50)&&(fsr3Reading < 50)&&(fsr4Reading < 50)) {
+    lcd.setCursor(0,1); 
+    lcd.print("   No pressure  ");
+  }
+  else if ((fsr1Reading < 350) && (fsr2Reading < 350)&&(fsr3Reading < 350)&&(fsr4Reading < 350)) {
+   lcd.setCursor(0,1); 
+   lcd.print("Medium squeeze  "); 
+  }
+  else if ((fsr1Reading > 350) && (fsr2Reading > 350)&&(fsr3Reading > 350)&&(fsr4Reading > 350)){
+   lcd.setCursor(0,1); 
+   lcd.print("   Big squeeze  ");}
+}
